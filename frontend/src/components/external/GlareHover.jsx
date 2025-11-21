@@ -16,6 +16,7 @@ const GlareHover = ({
   className = '',
   style = {}
 }) => {
+  // Parse the hex color to RGB so we can control opacity
   const hex = glareColor.replace('#', '');
   let rgba = glareColor;
   if (/^[\dA-Fa-f]{6}$/.test(hex)) {
@@ -32,13 +33,14 @@ const GlareHover = ({
 
   const overlayRef = useRef(null);
 
+  // Trigger the glare animation on hover
   const animateIn = () => {
     const el = overlayRef.current;
     if (!el) return;
 
     el.style.transition = 'none';
     el.style.backgroundPosition = '-100% -100%, 0 0';
-    // force reflow
+    // Force a reflow to restart the animation
     // eslint-disable-next-line no-unused-expressions
     el.offsetHeight;
     el.style.transition = `${transitionDuration}ms ease`;
@@ -58,6 +60,7 @@ const GlareHover = ({
     }
   };
 
+  // The glare is essentially a gradient that moves across the element
   const overlayStyle = {
     position: 'absolute',
     inset: 0,

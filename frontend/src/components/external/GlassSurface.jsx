@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useId, useMemo, memo } from 'react';
 
-// Hook to detect dark mode preference
+// Just a little hook to check if the user prefers dark mode.
+// We need this to adjust the glass effect brightness/contrast.
 const useDarkMode = () => {
   const [isDark, setIsDark] = useState(false);
 
@@ -55,11 +56,13 @@ const GlassSurface = ({
 
   const isDarkMode = useDarkMode();
 
-  // Generate the SVG displacement map content
+  // This constructs the SVG displacement map.
+  // It's a bit heavy, so we only want to run this when dimensions actually change.
   const generateDisplacementMap = () => {
     const rect = containerRef.current?.getBoundingClientRect();
     const actualWidth = rect?.width || 400;
     const actualHeight = rect?.height || 200;
+    // Keep the edge size proportional to the border width
     const edgeSize = Math.min(actualWidth, actualHeight) * (borderWidth * 0.5);
 
     const svgContent = `
@@ -90,7 +93,8 @@ const GlassSurface = ({
     }
   };
 
-  // Update filters when props change
+  // Update the SVG filters whenever our props change.
+  // We're manipulating the DOM directly here for performance to avoid re-rendering the whole SVG tree.
   useEffect(() => {
     updateDisplacementMap();
 
@@ -117,12 +121,12 @@ const GlassSurface = ({
     xChannel, yChannel, mixBlendMode
   ]);
 
-  // Handle resizing
+  // Watch for resize events to update the map.
   useEffect(() => {
     if (!containerRef.current) return;
 
     const observer = new ResizeObserver(() => {
-      // Debounce slightly to avoid thrashing
+      // Use rAF to debounce and sync with screen refreshes
       requestAnimationFrame(updateDisplacementMap);
     });
 
@@ -130,6 +134,8 @@ const GlassSurface = ({
     return () => observer.disconnect();
   }, []);
 
+  // Check if the browser can handle SVG filters (basically not Safari/Firefox for now).
+  // This prevents the "glitchy" look on unsupported browsers.
   const supportsSVGFilters = useMemo(() => {
     if (typeof navigator === 'undefined') return false;
     const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
@@ -144,7 +150,9 @@ const GlassSurface = ({
       height: typeof height === 'number' ? `${height}px` : height,
       borderRadius: `${borderRadius}px`,
       '--glass-frost': backgroundOpacity,
-      '--glass-saturation': saturation
+      '--glass-saturation': saturation,
+      // Hint to the browser to promote this to a layer
+      willChange: 'transform, opacity'
     };
 
     if (supportsSVGFilters) {
@@ -162,7 +170,7 @@ const GlassSurface = ({
       };
     }
 
-    // Fallback for browsers with poor SVG filter support
+    // Fallback for browsers that struggle with the complex SVG filter
     const fallbackBg = isDarkMode
       ? 'rgba(255, 255, 255, 0.1)'
       : 'rgba(255, 255, 255, 0.25)';
