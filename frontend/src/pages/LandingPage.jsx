@@ -7,34 +7,49 @@ import LoginButton from "../components/external/Button.jsx";
 
 const LandingPage = () => {
   return (
-    <div className="w-screen h-screen font-[font] relative overflow-hidden">
+    <div className="w-screen min-h-screen font-[font] relative overflow-x-hidden bg-black">
       <DarkVeil />
 
       {/* Navbar */}
-      <div className="fixed top-6 right-6 md:right-20 z-50">
-        <div className="flex items-center gap-3">
-          <Link to="/signup">
-            <GlassSurface
-              width={140}
-              height={44}
-              borderRadius={30}
-              className="cursor-pointer px-4 hover:brightness-110 active:scale-95"
-              mixBlendMode="screen"
-            >
-              <span className="text-sm text-white font-medium">Sign up</span>
-            </GlassSurface>
+      <div className="fixed top-6 left-0 right-0 z-50 px-6 md:px-20">
+        <div className="flex items-center justify-between">
+          {/* Logo/Brand */}
+          <Link to="/" className="group flex items-center gap-3">
+            <img
+              src="/logo.png"
+              alt="Composter Logo"
+              className="w-8 h-8 object-contain"
+            />
+            <h1 className="text-2xl font-bold text-white hover:scale-105 transition-transform">
+              Composter
+            </h1>
           </Link>
 
-          <Link to="/login">
-            <LoginButton width="140px" height="44px" className="-translate-y-px">
-              Login
-            </LoginButton>
-          </Link>
+          {/* Auth Buttons */}
+          <div className="flex items-center gap-3">
+            <Link to="/signup">
+              <GlassSurface
+                width={140}
+                height={44}
+                borderRadius={30}
+                className="cursor-pointer px-4 hover:brightness-110 active:scale-95"
+                mixBlendMode="screen"
+              >
+                <span className="text-sm text-white font-medium">Sign up</span>
+              </GlassSurface>
+            </Link>
+
+            <Link to="/login">
+              <LoginButton width="140px" height="44px" className="-translate-y-px">
+                Login
+              </LoginButton>
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* Hero Content */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
+      {/* Hero Section */}
+      <div className="relative z-10 h-screen flex items-center justify-center px-4">
         <div className="relative text-center w-full max-w-5xl mx-auto">
           <div className="space-y-2">
             <SplitText
@@ -86,7 +101,7 @@ const LandingPage = () => {
 
           <div className="mt-12 flex justify-center gap-6 opacity-0 animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-forwards" style={{ animationDelay: '1s' }}>
             <Link to="/docs">
-              <button className="px-8 py-3 rounded-full bg-white text-black font-bold hover:scale-105 transition-transform">
+              <button className="px-8 py-3 rounded-full bg-cyan-400 text-black font-bold hover:scale-105 transition-transform">
                 Browse Docs
               </button>
             </Link>
