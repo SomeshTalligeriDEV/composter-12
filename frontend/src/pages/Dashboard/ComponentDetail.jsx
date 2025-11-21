@@ -63,7 +63,7 @@ const ComponentDetail = () => {
             Copy Import
           </Button>
           <Button>
-            <Download size={16} className="mr-2" />
+            <span className="mr-2">Download</span>
             Pull Component
           </Button>
         </div>
