@@ -5,14 +5,11 @@ import Card from "../../components/ui/Card.jsx";
 import Button from "../../components/ui/Button.jsx";
 import Badge from "../../components/ui/Badge.jsx";
 
+import { components } from "../../data/components.js";
+
 const ComponentsList = () => {
-  const components = Array.from({ length: 8 }).map((_, i) => ({
-    id: i + 1,
-    name: `Component ${i + 1}`,
-    description: "A reusable UI component for your projects.",
-    tags: ["UI", "React", "Tailwind"],
-    updated: "2 days ago",
-  }));
+  // Using real data from our shared source
+  const displayComponents = components;
 
   return (
     <div className="space-y-8">
@@ -48,7 +45,7 @@ const ComponentsList = () => {
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {components.map((comp) => (
+        {displayComponents.map((comp) => (
           <Link key={comp.id} to={`/app/components/${comp.id}`}>
             <Card hoverEffect className="h-full group">
               <div className="aspect-video rounded-xl bg-gradient-to-br from-white/5 to-white/10 mb-4 flex items-center justify-center group-hover:from-violet-500/10 group-hover:to-fuchsia-500/10 transition-colors">

@@ -8,31 +8,25 @@ import Button from "../../components/ui/Button.jsx";
 import Badge from "../../components/ui/Badge.jsx";
 import CodeBlock from "../../components/ui/CodeBlock.jsx";
 
+import { components } from "../../data/components.js";
+
 const ComponentDetail = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("preview");
 
-  // Mock data
-  const component = {
-    name: "Auth Modal",
-    description: "A beautiful, glassmorphism-styled authentication modal with login and signup modes.",
-    version: "1.0.2",
-    updated: "2 days ago",
-    author: "Somesh Talligeri",
-    tags: ["UI", "Modal", "Auth"],
-    code: `import React from 'react';
+  // Find the component from our data source
+  const component = components.find(c => c.id === parseInt(id));
 
-export default function AuthModal() {
-  return (
-    <div className="p-4 bg-white rounded-lg shadow-xl">
-      <h2 className="text-xl font-bold">Login</h2>
-      <input type="text" placeholder="Username" />
-      <input type="password" placeholder="Password" />
-      <button>Submit</button>
-    </div>
-  );
-}`
-  };
+  if (!component) {
+    return (
+      <div className="text-center py-20">
+        <h2 className="text-2xl font-bold text-white">Component not found</h2>
+        <Link to="/app/components">
+          <Button className="mt-4">Back to Components</Button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
